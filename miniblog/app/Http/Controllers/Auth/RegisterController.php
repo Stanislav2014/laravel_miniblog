@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::ADMIN;
 
     /**
      * Create a new controller instance.
@@ -49,9 +52,10 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
         return Validator::make($data, [
-            'phone' => ['required_without:email', 'string', 'max:255'],
-            'email' => ['required_without:phone', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required_without:email', 'string', 'max:255','nullable', 'unique:users'],
+            'email' => ['required_without:phone', 'string', 'email', 'max:255', 'nullable', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -64,16 +68,45 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $role = 2;
+        $roleId = 2;
+        $login = $data['phone'];
         if ($data['email']) {
             // send confirm email link
-            $role = 0;
+            $roleId = 0;
+            $login = $data['email'];
         }
-        return User::create([
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'role_id' => $role,
-            'password' => Hash::make($data['password'])
-        ]);
+        $role = Role::all()->find($roleId);
+        $user = new User();
+        $user->login = $login;
+        $user->email = $data['email'];
+        $user->phone = $data['phone'];
+        $user->password = Hash::make($data['password']);
+
+        if ($role) {
+//            $role->users()->attach($user);
+            $user->role()->associate($role);
+        } else {
+//            $user->save();
+        }
+        $user->save();
+
+        return $user;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        event(new Registered($user = $this->create($request->all())));
+        if ($user->role()) {
+             $this->guard()->login($user);
+        }
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 }

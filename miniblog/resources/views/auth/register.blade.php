@@ -14,15 +14,15 @@
                                 <div class="col">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">Email</label>
+                                               id="inlineRadio2" value="phone" checked>
+                                        <label class="form-check-label" for="inlineRadio2">Phone</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio2" value="option2" checked>
-                                        <label class="form-check-label" for="inlineRadio2">Phone</label>
+                                               id="inlineRadio1" value="email">
+                                        <label class="form-check-label" for="inlineRadio1">Email</label>
                                     </div>
                                 </div>
                             </div>
@@ -32,9 +32,9 @@
                                        class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text"
+                                    <input id="phone" type="text"
                                            class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                           value="{{ old('phone') }}" required autocomplete="name" autofocus>
+                                           value="{{ old('phone') }}"  autocomplete="phone" autofocus>
 
                                     @error('phone')
                                     <span class="invalid-feedback" role="alert">
@@ -51,7 +51,7 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email"
                                            class="form-control @error('email') is-invalid @enderror" name="email"
-                                           value="{{ old('email') }}" required autocomplete="email">
+                                           value="{{ old('email') }}"  autocomplete="email">
 
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -104,11 +104,14 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        $('[name="inlineRadioOptions"]').on('change', function () {
-
-            console.log(this);
-
-        })
+        $(document).ready(function () {
+            $('[name="inlineRadioOptions"]').on('change', function () {
+                const selected = $(this).filter(':checked').val();
+                const switched = selected === 'phone' ? 'email' : 'phone';
+                $(`form input[name=${switched}]`).closest('.form-group').toggleClass('d-none');
+                $(`form input[name=${selected}]`).closest('.form-group').toggleClass('d-none');
+            })
+        });
     </script>
 @endsection
 

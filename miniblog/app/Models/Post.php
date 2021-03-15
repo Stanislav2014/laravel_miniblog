@@ -16,6 +16,19 @@ class Post extends Model
      */
     protected $fillable = [
         'name',
+        'text',
         'public',
+        'user_id'
     ];
+
+    /**
+     * get user by post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

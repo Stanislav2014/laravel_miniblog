@@ -17,7 +17,7 @@ class AddRoleIdUsers extends Migration
             $table->bigInteger('role_id')->unsigned()->nullable();
             $table->foreign('role_id')
                 ->references('id')
-                ->on('role')
+                ->on('roleS')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
