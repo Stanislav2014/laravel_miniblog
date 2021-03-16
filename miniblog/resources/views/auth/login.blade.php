@@ -15,7 +15,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Login Email or Phone') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('login') is-invalid @enderror" name="email" value="{{ old('login') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="text" class="form-control @error('login') is-invalid @enderror" name="email" value="{{ old('login') }}" required autocomplete="email" autofocus>
 
                                 @error('login')
                                     <span class="invalid-feedback" role="alert">

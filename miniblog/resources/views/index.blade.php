@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                @if (Route::has('createPost'))
+                @if (Route::has('createPost') && Auth::user())
                     <div class="row justify-content-center">
                         <div class="col-md-4">
                             <a class="nav-link" href="{{ route('createPost') }}">

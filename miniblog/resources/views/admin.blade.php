@@ -27,7 +27,7 @@
                             <div class="card-header">{{ __('User') }} {{$user->login}}</div>
 
                             <div class="card-body">
-                                <img class="card-img-top" src="..." alt="Card image cap">
+                                <img class="card-img-top" src="{{ asset('/storage/'. $user->image) }}" alt="Card image cap">
                                 <a href="{{ route('editAdmin', ['id' => $user->id]) }}">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Edit User') }}
@@ -45,7 +45,7 @@
                         <div class="card-header">{{ __('User') }} {{Auth::user()->login}}</div>
 
                         <div class="card-body">
-                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <img class="card-img-top" src="{{ asset('/storage/'. $user->image) }}" alt="Card image cap">
                             <a href="{{ route('editAdmin', ['id' => Auth::user()->id]) }}">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Edit User') }}

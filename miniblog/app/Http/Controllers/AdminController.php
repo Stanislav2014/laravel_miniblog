@@ -34,12 +34,13 @@ class AdminController extends Controller
      * Edit user
      *
      * @param $id
-     * @return void
+     * @return \Illuminate\Contracts\Support\Renderable
      */
 
     public function edit($id)
     {
-
+        $user = User::find($id);
+        return view('admin.edit', ['user' => $user]);
     }
 
     /**
@@ -47,11 +48,34 @@ class AdminController extends Controller
      *
      * @param $id
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
 
     public function update($id, Request $request)
     {
+        $data = $request->all();
+//        $post = User::where(['id' => $id])
+//            ->update([
+//                'name' => $data['name'],
+//                'text' => $data['text']
+//            ]);
+//        if ($post) {
+//            return redirect()->route('listAdmin');
+//        }
+//        return redirect()->route('editAdmin', ['id' => $id]);
+
+
+        if (isset($data['image'])) {
+            $fileName = time() . '_' . $data['image']->getClientOriginalName();
+            $filePath = $data['image']->store('uploads', 'public');
+            $updated = User::where(['id' => $id])
+                ->update([
+                    'image' => $filePath
+                ]);
+
+            return redirect()->route('listAdmin');
+        }
+        return redirect()->route('editAdmin', ['id' => $id]);
 
     }
 
