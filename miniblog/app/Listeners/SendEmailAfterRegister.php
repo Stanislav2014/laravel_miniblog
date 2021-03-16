@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class sendEmailAfterRegister
+class SendEmailAfterRegister
 {
     /**
      * Create the event listener.
