@@ -47,6 +47,6 @@ Route::group([
     Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 

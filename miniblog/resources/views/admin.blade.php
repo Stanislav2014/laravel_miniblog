@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user() && Auth::user()->role->id === 1)
+        @if(Auth::user() && Auth::user()->role && Auth::user()->role->id === 1)
             @foreach($users as $user)
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -38,14 +38,14 @@
                     </div>
                 </div>
             @endforeach
-        @elseif(Auth::user() && Auth::user()->role->id === 2)
+        @elseif(Auth::user() && Auth::user()->role && Auth::user()->role->id === 2)
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">{{ __('User') }} {{Auth::user()->login}}</div>
 
                         <div class="card-body">
-                            <img class="card-img-top" src="{{ asset('/storage/'. $user->image) }}" alt="Card image cap">
+                            <img class="card-img-top" src="{{ asset('/storage/'. Auth::user()->image) }}" alt="Card image cap">
                             <a href="{{ route('editAdmin', ['id' => Auth::user()->id]) }}">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Edit User') }}
